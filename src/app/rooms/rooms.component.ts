@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {DataService} from "../data.service";
+import {Room} from "../model/Room";
 
 @Component({
   selector: 'app-rooms',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RoomsComponent implements OnInit {
 
-  constructor() { }
+  rooms: Array<Room>
+
+  constructor(private dataService:DataService) {
+    this.rooms = dataService.rooms;
+  }
 
   ngOnInit(): void {
+    console.log(this.rooms)
   }
 
 }
