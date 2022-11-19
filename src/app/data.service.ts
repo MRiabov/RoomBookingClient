@@ -8,7 +8,6 @@ export class DataService {
 
   rooms: Array<Room>
 
-
   constructor() {
     this.rooms = new Array<Room>()
     const room1 = new Room(1, 'First Room', 'First Floor', [
