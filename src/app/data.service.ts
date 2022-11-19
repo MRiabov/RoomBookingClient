@@ -10,12 +10,12 @@ export class DataService {
 
   constructor() {
     this.rooms = new Array<Room>()
-    const room1 = new Room(1, 'First Room', 'First Floor', [
+    const room1 = new Room(1, 'First room', 'First floor', [
       new LayoutCapacity(1, Layout.THEATER, 50),
       new LayoutCapacity(2, Layout.BOARD, 20)
     ]);
 
-    const room2 = new Room(1, 'First Room', 'First Floor', [
+    const room2 = new Room(2, 'Second room', 'Third floor', [
       new LayoutCapacity(1, Layout.THEATER, 50),
       new LayoutCapacity(2, Layout.BOARD, 20)
     ])
