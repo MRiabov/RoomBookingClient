@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {DataService} from "../data.service";
-import {Room} from "../model/Room";
+import {DataService} from "../../data.service";
+import {Room} from "../../model/Room";
 import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
@@ -10,16 +10,19 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class RoomsComponent implements OnInit {
 
-  rooms: Array<Room>
+  rooms!: Array<Room>
   selectedRoom!: Room;
 
   constructor(private dataService: DataService,
               private route: ActivatedRoute,
               private router: Router) {
-    this.rooms = dataService.rooms;
   }
 
   ngOnInit(): void {
+    this.dataService.getRooms.subscribe(
+      next => this.rooms = next
+    );
+
     this.route.queryParams.subscribe(
       params => {
         const id = params['id']

@@ -1,14 +1,23 @@
 import {Injectable} from '@angular/core';
 import {Layout, LayoutCapacity, Room} from "./model/Room";
 import {User} from "./model/User";
+import {Observable, of} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
 
-  rooms: Array<Room> = new Array<Room>()
-  users: Array<User> = new Array<User>()
+  private rooms: Array<Room> = new Array<Room>();
+  private users: Array<User> = new Array<User>();
+
+  get getRooms():Observable<Array<Room>>{
+    return of(this.rooms);
+  }
+
+  get getUsers():Observable<Array<User>>{
+    return of(this.users);
+  }
 
   constructor() {
     const room1 = new Room(1, 'First room', 'First floor', [

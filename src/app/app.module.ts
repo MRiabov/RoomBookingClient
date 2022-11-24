@@ -3,13 +3,14 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppComponent} from './app.component';
 import {MenuComponent} from './menu/menu.component';
-import {RoomsComponent} from './rooms/rooms.component';
-import {UsersComponent} from './users/users.component';
+import {RoomsComponent} from './admin/rooms/rooms.component';
+import {UsersComponent} from './admin/users/users.component';
 import {CalendarComponent} from './calendar/calendar.component';
 import {RouterModule, Routes} from "@angular/router";
 import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
-import { RoomDetailComponent } from './rooms/room-detail/room-detail.component';
-import { UserDetailComponent } from './users/user-detail/user-detail.component';
+import { RoomDetailComponent } from './admin/rooms/room-detail/room-detail.component';
+import { UserDetailComponent } from './admin/users/user-detail/user-detail.component';
+import { UserEditComponent } from './admin/users/user-edit/user-edit.component';
 
 const routes: Routes = [
   {path: 'admin/users', component: UsersComponent},
@@ -30,6 +31,7 @@ const routes: Routes = [
     PageNotFoundComponent,
     RoomDetailComponent,
     UserDetailComponent,
+    UserEditComponent,
   ],
   imports: [
     BrowserModule,
