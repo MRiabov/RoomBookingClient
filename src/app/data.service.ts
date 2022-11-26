@@ -11,12 +11,24 @@ export class DataService {
   private rooms: Array<Room> = new Array<Room>();
   private users: Array<User> = new Array<User>();
 
-  get getRooms():Observable<Array<Room>>{
+  get getRooms(): Observable<Array<Room>> {
     return of(this.rooms);
   }
 
-  get getUsers():Observable<Array<User>>{
+  get getUsers(): Observable<Array<User>> {
     return of(this.users);
+  }
+
+  updateUser(user: User): Observable<User> {
+    console.log("this is executed",user.id)
+    let originalUser =
+      this.users.find(u => user.id === u.id);
+    if (originalUser==null) {
+      return Observable.prototype;
+    }
+    originalUser.name = user.name;
+    console.log(originalUser.name)
+    return of(originalUser);
   }
 
   constructor() {
@@ -33,7 +45,7 @@ export class DataService {
     this.users.push(
       new User(1, 'user1'),
       new User(2, 'user2'),
-      new User(3,'user3')
+      new User(3, 'user3')
     )
   }
 }

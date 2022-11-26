@@ -14,13 +14,16 @@
       <tr *ngFor="let user of users">
         <td>{{user.id}}</td>
         <td>{{user.name}}</td>
-        <td><button type="button" class="btn btn-primary" (click)="selectUser(user.id)">view</button></td>
+        <td>
+          <button type="button" class="btn btn-primary" (click)="selectUser(user.id)">view</button>
+        </td>
       </tr>
       </tbody>
     </table>
   </div>
   <div class="col-6">
-    <app-user-detail *ngIf="selectedUser" [selectedUser]="selectedUser"></app-user-detail>
+    <app-user-detail *ngIf="action === 'view'" [selectedUser]="selectedUser"></app-user-detail>
+    <app-user-edit *ngIf="action === 'edit'" [selectedUser]="selectedUser"></app-user-edit>
   </div>
 </div>
 
