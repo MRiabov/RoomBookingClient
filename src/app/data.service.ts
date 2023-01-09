@@ -20,15 +20,25 @@ export class DataService {
   }
 
   updateUser(user: User): Observable<User> {
-    console.log("this is executed",user.id)
+    console.log("this is executed", user.id)
     let originalUser =
       this.users.find(u => user.id === u.id);
-    if (originalUser==null) {
+    if (originalUser == null) {
       return Observable.prototype;
     }
     originalUser.name = user.name;
     console.log(originalUser.name)
     return of(originalUser);
+  }
+
+  addUser(newUser: User, password: string): Observable<User> {
+    let id = 0;
+    for (const user of this.users) {
+      if (user.id > id) id = user.id;
+    }
+    newUser.id = id + 1;
+    this.users.push(newUser);
+    return of(newUser);
   }
 
   constructor() {
