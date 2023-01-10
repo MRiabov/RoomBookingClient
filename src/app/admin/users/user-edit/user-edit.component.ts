@@ -38,7 +38,8 @@ export class UserEditComponent implements OnInit {
     } else {
       this.dataService.updateUser(this.formUser).subscribe(
         user => {
-          this.router.navigate(['admin', 'users'], {queryParams: {id: user.id, action: 'view'}});
+          this.router.navigate(['admin', 'users'],
+            {queryParams: {id: user.id, action: 'view'}});
         }
       )
     }

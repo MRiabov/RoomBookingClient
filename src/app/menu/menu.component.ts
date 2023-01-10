@@ -18,8 +18,8 @@ export class MenuComponent implements OnInit {
     this.router.navigate(['admin', 'rooms']);
   }
 
-  navigateToUsersAdmin(){
-    this.router.navigate(['admin','rooms'])
+  navigateToUsersAdmin() {
+    this.router.navigate(['admin','users'])
   }
 
   navigateToHome() {

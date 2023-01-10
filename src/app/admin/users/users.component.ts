@@ -23,11 +23,11 @@ export class UsersComponent implements OnInit {
     this.dataService.getUsers.subscribe(
       next => this.users = next
     );
-
+    //queryParams are parameters of the query, something that goes after ? in link, like google.com/find?id=3&action=view
     this.route.queryParams.subscribe(
       params => {
-        const id = +params['id'];
-        this.action = params['action'];
+        const id = +params['id'];//plus converts it to number
+        this.action = params['action'];//we query element in array by string...
         if (id) { // @ts-ignore
           this.selectedUser = this.users.find(user => user.id === id);
         }

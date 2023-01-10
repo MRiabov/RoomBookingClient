@@ -36,5 +36,4 @@ export class RoomsComponent implements OnInit {
   setSelectedRoom(id: number) {
     this.router.navigate(['admin', 'rooms'], {queryParams: {id}});
   }
-
 }

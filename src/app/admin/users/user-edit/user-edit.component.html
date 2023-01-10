@@ -1,14 +1,14 @@
-<h1>{{selectedUser.id == null ? 'Add' : 'Edit'}}</h1>
+<h1>{{selectedUser.id == null ? 'Add' : 'Edit'}} User</h1>
 
-<div class="bg-warning p-5" *ngIf="warnMessage.length>0">{{warnMessage}}</div>
+<div class="bg-warning p-5" *ngIf="warnMessage">{{warnMessage}}</div>
 
-<form action="some-url-goes-here" method="post">
+<form #userForm="ngForm"><!--here we get a reference to get properties of form lower-->
 
   <div class="form-group">
-    <label for="name">Name</label>
+    <label for="name">Name</label> <!-- [(ngModel)] double brackets allow reading and writing form backend -->
     <input type="text" class="form-control" id="name" placeholder="user name" [(ngModel)]="formUser.name" name="name" required #nameField="ngModel">
-    <div class="alert alert-danger" *ngIf="nameField.invalid&&nameField.touched">error message placeholder</div>
-
+    <div class="alert alert-danger" *ngIf="nameField.invalid&&nameField.touched">error message placeholder</div> <!--"required" keyword applies dynamic styles-->
+<!--                                    used as "if namefield is not invalid and not touched, don't show it-->
   </div>
 
   <div class="form-group" *ngIf="selectedUser.id == null">   <!-- only show this field on adding a user -->
@@ -16,10 +16,10 @@
     <input type="password" class="form-control" id="password" placeholder="password" name="password" [ngModel]="password">
     <div class="alert alert-danger">error message placeholder</div>
 
-    <label for="password2"> Repeat Password</label>
+    <label for="password2"> Repeat Password</label>  <!-- id, name, label are unique, [ngModel] points to a object in the class (string) -->
     <input type="password" class="form-control" id="password2" placeholder="password" name="password2" [ngModel]="password2">
     <div class="alert alert-danger">error message placeholder</div>
   </div>
 
-  <button type="button" class="btn btn-primary" (click)="onSubmit()">Save</button>
+  <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="userForm.invalid" >Save</button>
 </form>

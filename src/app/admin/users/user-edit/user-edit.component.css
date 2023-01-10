@@ -1,3 +1,4 @@
 input.ng-invalid.ng-touched  {
   border: 1px solid #F00;
-}
+}/*only on input, only invalid and only touched forms
+Is needed because if you don't, it will paint the whole form in red border*/

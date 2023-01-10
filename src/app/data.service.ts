@@ -35,7 +35,7 @@ export class DataService {
     let id = 0;
     for (const user of this.users) {
       if (user.id > id) id = user.id;
-    }
+    }//find the highest id. We shouldn't care with JPA, right?...
     newUser.id = id + 1;
     this.users.push(newUser);
     return of(newUser);
