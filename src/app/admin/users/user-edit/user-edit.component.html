@@ -6,20 +6,27 @@
 
   <div class="form-group">
     <label for="name">Name</label> <!-- [(ngModel)] double brackets allow reading and writing form backend -->
-    <input type="text" class="form-control" id="name" placeholder="user name" [(ngModel)]="formUser.name" name="name" required #nameField="ngModel">
-    <div class="alert alert-danger" *ngIf="nameField.invalid&&nameField.touched">error message placeholder</div> <!--"required" keyword applies dynamic styles-->
+    <input type="text" class="form-control" id="name" placeholder="user name" [(ngModel)]="formUser.name" name="name"
+            required #nameField="ngModel" (change)="checkIfNameIsValid()">
+    <div class="alert alert-danger" *ngIf="nameField.invalid&&nameField.touched">Name is required!</div> <!--"required" keyword applies dynamic styles-->
 <!--                                    used as "if namefield is not invalid and not touched, don't show it-->
+    <div class="alert alert-danger" *ngIf="!nameIsValid&&nameField.touched">Name can not be blank!</div>
   </div>
 
   <div class="form-group" *ngIf="selectedUser.id == null">   <!-- only show this field on adding a user -->
     <label for="password">Password</label>
-    <input type="password" class="form-control" id="password" placeholder="password" name="password" [ngModel]="password">
-    <div class="alert alert-danger">error message placeholder</div>
+    <input type="password" class="form-control" id="password" placeholder="password" name="password"
+           (change)="checkIfPasswordIsValid()" [ngModel]="passwordField"
+    #passwordField="ngModel">
+    <div class="alert alert-danger" *ngIf="!checkIfPasswordIsValid()&&passwordField.touched">Password can not be blank!</div>
 
-    <label for="password2"> Repeat Password</label>  <!-- id, name, label are unique, [ngModel] points to a object in the class (string) -->
-    <input type="password" class="form-control" id="password2" placeholder="password" name="password2" [ngModel]="password2">
-    <div class="alert alert-danger">error message placeholder</div>
+    <label for="password2">Repeat Password</label>  <!-- id, name, label are unique, [ngModel] points to a object in the class (string) -->
+    <input type="password" class="form-control" id="password2" placeholder="password" name="password2"
+           [ngModel]="passwordField2" #passwordField2="ngModel" (change)="!checkIfPasswordIsValid()">
+    <div class="alert alert-danger" *ngIf="!passwordIsValid&&passwordField2.touched">Password can not be blank!</div>
+    <div class="alert alert-danger" *ngIf="!passwordMatch&&passwordField2.touched">Passwords must match!</div>
   </div>
 
-  <button type="button" class="btn btn-primary" (click)="onSubmit()" [disabled]="userForm.invalid" >Save</button>
+  <button type="button" class="btn btn-primary" (click)="onSubmit()"
+          [disabled]="userForm.invalid||!nameIsValid||!passwordIsValid">Save</button>
 </form>

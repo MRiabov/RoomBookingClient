@@ -17,8 +17,12 @@ export class UserEditComponent implements OnInit {
 
   warnMessage: string = '';
 
-  password!:string;
-  password2!:string;
+  password!: string;
+  password2!: string;
+
+  nameIsValid = false; /*used for validation*/
+  passwordIsValid = false;
+  passwordMatch!: boolean;
 
   constructor(private dataService: DataService,
               private router: Router) {
@@ -30,9 +34,9 @@ export class UserEditComponent implements OnInit {
 
   onSubmit() {
     if (this.formUser.id == null) {
-      this.dataService.addUser(this.formUser,this.password).subscribe(
+      this.dataService.addUser(this.formUser, this.password).subscribe(
         user => {
-          this.router.navigate(['admin','users'], {queryParams: {id: user.id, action: 'view'}})
+          this.router.navigate(['admin', 'users'], {queryParams: {id: user.id, action: 'view'}})
         }
       );
     } else {
@@ -42,6 +46,31 @@ export class UserEditComponent implements OnInit {
             {queryParams: {id: user.id, action: 'view'}});
         }
       )
+    }
+  }
+
+  checkIfNameIsValid():boolean {
+    if (!this.formUser.name) {
+      return this.nameIsValid = false;
+    } else {
+      return this.nameIsValid = this.formUser.name.trim().length > 0;
+    }
+  }
+
+  checkIfPasswordIsValid(): boolean {
+    if (!this.password) {
+      this.passwordIsValid = false;
+      return false;
+    } else {
+      return this.passwordIsValid = this.password.trim().length > 0;
+    }
+  }
+
+  checkIfPasswordsMatch(): boolean {
+    if (!this.password || !this.password2) {
+      return this.passwordMatch = false;
+    } else {
+      return this.passwordMatch = this.password === this.password2;
     }
   }
 }
