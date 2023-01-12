@@ -12,14 +12,12 @@ export class UserDetailComponent {
   @Input()
   selectedUser!: User;
 
-  constructor(
-    private router: Router
-  ) {
+  constructor(private router: Router) {
   }
 
   editUser() {
     this.router.navigate(['admin', 'users'],
-      {queryParams: {action: 'edit', id: this.selectedUser.id}})
+      {queryParams: {action: 'edit', id: this.selectedUser.id}});
   }
 
 

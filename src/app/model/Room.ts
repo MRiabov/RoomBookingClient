@@ -1,15 +1,17 @@
 export class Room {
-  id: number;
-  name: string;
-  location: string;
-  capacities: Array<LayoutCapacity>
+  id!: number;
+  name!: string;
+  location!: string;
+  capacities!: Array<LayoutCapacity>
 
-  constructor(id: number, name: string, location: string, capacities: Array<LayoutCapacity>) {
-    this.id = id;
-    this.name = name;
-    this.location = location;
-    this.capacities = capacities;
+  constructor(id?: number, name?: string, location?: string, capacities?: Array<LayoutCapacity>) {
+    if (id) this.id = id;
+    if (name) this.name = name;
+    if (location) this.location = location;
+    if (capacities) this.capacities = capacities;
   }
+
+
 }
 
 export class LayoutCapacity {

@@ -1,21 +1,21 @@
 <div class="roomDetails">
   <h2>Room details</h2>
-  <a class="btn btn-small btn-warning">edit</a>
+  <a class="btn btn-small btn-warning" (click)="editRoom()">edit</a>
   <a class="btn btn-small btn-warning">delete</a>
   <table>
     <tr>
-      <td>id</td><td>{{room.id}}</td>
+      <td>id</td><td>{{selectedRoom.id}}</td>
     </tr>
     <tr>
-      <td>name</td><td>{{room.name}}</td>
+      <td>name</td><td>{{selectedRoom.name}}</td>
     </tr>
     <tr>
-      <td>location</td><td>{{room.location}}</td>
+      <td>location</td><td>{{selectedRoom.location}}</td>
     </tr>
   </table>
   <h4>This room can accomodate:</h4>
   <table>
-    <tr *ngFor="let layoutCapacity of room.capacities"> <!-- repeat the tr for each capacity -->
+    <tr *ngFor="let layoutCapacity of selectedRoom.capacities"> <!-- repeat the tr for each capacity -->
       <td>{{layoutCapacity.layout}}</td><td>{{layoutCapacity.capacity}}</td>
     </tr>
   </table>
