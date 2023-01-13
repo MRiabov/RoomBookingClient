@@ -14,7 +14,6 @@ export class RoomsComponent implements OnInit {
   selectedRoom!: Room;
   action!: string;
 
-
   constructor(private dataService: DataService,
               private route: ActivatedRoute,
               private router: Router) {

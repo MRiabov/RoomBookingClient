@@ -1,1 +1,27 @@
-<p>room-edit works!</p>
+<h1> {{selectedRoom.id == null ? 'Add' : 'Edit'}} Room</h1>
+<p>you are now editing {{selectedRoom.name}}</p>
+<form [formGroup]="roomForm">
+  <div class="form-group">
+    <label for="name">Name</label><!--                                        formControlName for reactive forms-->
+    <input type="text" class="form-control" id="name" placeholder="room name" formControlName="roomName"
+           required>
+    <div class="alert alert-danger"></div>
+
+  </div>
+  <div class="form-group">
+    <label for="location">Location</label>
+    <input type="text" class="form-control" id="location" placeholder="location" formControlName="location"
+           required>
+    <div class="alert alert-danger"></div>
+  </div>
+
+  <h2>This room can accomodate:</h2>
+
+  <div class="form-group" *ngFor="let layout of layouts">
+    <label for="layout{{layout}}">{{layout}}</label><!--look, this should work like layoutEnum[layout], but it doesn't, for whatever reason.-->
+<!--    edit:  for="layout{{layout}}" fixes the issue, because for programmatically associates label with whatever it is assigned to. wonderful.-->
+    <input type="number" class="form-control" id="layout{{layout}}" formControlName="layout{{layout}}">
+  </div>
+
+  <button type="button" class="btn btn-primary" [disabled]="" (click)="onSubmit() ">Save</button>
+</form>

@@ -19,7 +19,7 @@ export class RoomDetailComponent implements OnInit {
   }
 
   editRoom(): void {
-    this.router.navigate(['admin', 'rooms'], {queryParams: {action: 'edit', id: this.selectedRoom}})
+    this.router.navigate(['admin', 'rooms'], {queryParams: {action: 'edit', id: this.selectedRoom.id}})
   }
 
 }
