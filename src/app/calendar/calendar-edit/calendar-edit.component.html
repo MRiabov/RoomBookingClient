@@ -1,0 +1,66 @@
+<p>calendar-edit works! it edits {{selectedBooking.title}}</p>
+
+<h1>{{selectedBooking.id == null ? 'Add' : 'Edit'}} Booking</h1>
+
+<form>
+  <div class="row">
+    <div class="form-group col-4">
+      <label for="date">Date</label>
+      <input type="date" class="form-control" id="date" >
+    </div>
+
+    <div class="form-group col-4">
+      <label for="startTime">Start time</label>
+      <input type="time" class="form-control" id="startTime" [(ngModel)]="selectedBooking.startTime">
+    </div>
+
+    <div class="form-group col-4">
+      <label for="endTime">End time</label>
+      <input type="time" class="form-control" id="endTime">
+    </div>
+
+  </div>
+
+  <div class="row">
+
+    <div class="form-group col-5">
+      <label for="room">Room</label>
+      <select class="form-control" id="room" name="name">
+        <option *ngFor="let room of rooms">{{room.name}}</option>
+      </select>
+    </div>
+
+    <div class="form-group col-5">
+      <label for="layout">Layout</label>
+      <select class="form-control" id="layout" >
+        <option *ngFor="let layout of layouts">{{layout}}</option>
+      </select>
+    </div>
+
+    <div class="form-group col-2">
+      <label for="participants" >Participants</label>
+      <input type="number" class="form-control" id="participants">
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="form-group col-6">
+      <label for="layout">User</label>
+      <select class="form-control" id="user">
+        <option *ngFor="let user of users">{{user.name}}</option>
+      </select>
+    </div>
+
+    <div class="form-group col-6">
+      <label for="title">Meeting title</label>
+      <input type="text" class="form-control" id="title" [(ngModel)]="selectedBooking.title" name="title">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <button type="button" class="btn btn-primary" (click)="updateBooking(selectedBooking)">Save</button>
+    </div>
+  </div>
+</form>

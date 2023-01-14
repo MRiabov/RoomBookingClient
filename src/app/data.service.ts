@@ -27,10 +27,10 @@ export class DataService {
     return of(this.bookings);
   }
 
-  getBookingsByDate(date:Date): Observable<Array<Booking>>{
+  getBookingsByDate(date: number): Observable<Array<Booking>> {
     const result = new Array<Booking>;
     for (let booking of this.bookings) {
-      if (booking.getDateAsDate().getDate() === date.getDate()) {
+      if (booking.getDateAsDate().getDate() === date) {
         result.push(booking);
       }
     }
@@ -104,6 +104,24 @@ export class DataService {
     return of(null)
   }
 
+  addBooking(newBooking: Booking) {
+    let id = 0;
+    for (const oldBooking of this.bookings) {
+      if (oldBooking.id > id) id = oldBooking.id;
+    }//find the highest id. We shouldn't care with JPA, right?...
+    newBooking.id = id + 1;
+    this.bookings.push(newBooking);
+    return of(newBooking);
+  }
+
+  updateBooking(newBooking: Booking){
+    let originalBooking = this.bookings.find(u => newBooking.id === u.id);
+    if (originalBooking == null) {
+      return Observable.prototype;
+    } else originalBooking = newBooking;
+    return of(originalBooking);
+  }
+
   constructor() {
     const room1 = new Room(1, 'First room', 'First floor', [
       new LayoutCapacity(1, Layout.THEATER, 50),
@@ -147,4 +165,6 @@ export class DataService {
     this.bookings.push(booking1);
     this.bookings.push(booking2);
   }
+
+
 }
