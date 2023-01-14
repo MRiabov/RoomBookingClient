@@ -42,7 +42,7 @@ export class UsersComponent implements OnInit {
   addUser() {
     // @ts-ignore
     this.selectedUser = new User();
-    this.router.navigate(['admin','users'], {queryParams: {action: 'add'}})
+    this.router.navigate(['admin', 'users'], {queryParams: {action: 'add'}})
   }
 
 }

@@ -1,6 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Layout, Room} from "../../../model/Room";
 import {FormBuilder, Validators} from "@angular/forms";
+import {DataService} from "../../../data.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-room-edit',
@@ -23,7 +25,11 @@ export class RoomEditComponent implements OnInit {
     }
   )
 
-  constructor(private formBuilder: FormBuilder) {
+  //don't look at this class, it's packed full of deprecated and nonworking code.
+
+  constructor(private formBuilder: FormBuilder,
+              private dataService: DataService,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -45,7 +51,16 @@ export class RoomEditComponent implements OnInit {
     for (const layout of this.layouts) {
 
     }
-    console.log(this.selectedRoom);
-    //todo save the rooms in dataservice
+    if (this.selectedRoom.id == null) {
+      this.dataService.addRoom(this.selectedRoom).subscribe(
+        receivedRoom => this.router.navigate(
+          ['admin', 'rooms'], {queryParams: {id: receivedRoom.id, action: 'view '}})
+      )
+    } else {
+      this.dataService.updateRoom(this.selectedRoom).subscribe(
+        receivedRoom => this.router.navigate(
+          ['admin', 'rooms'], {queryParams: {id: receivedRoom.id, action: 'view '}})
+      )
+    }
   }
 }

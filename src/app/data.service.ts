@@ -11,6 +11,7 @@ export class DataService {
   private rooms: Array<Room> = new Array<Room>();
   private users: Array<User> = new Array<User>();
 
+
   get getRooms(): Observable<Array<Room>> {
     return of(this.rooms);
   }
@@ -39,6 +40,51 @@ export class DataService {
     newUser.id = id + 1;
     this.users.push(newUser);
     return of(newUser);
+  }
+
+  addRoom(newRoom: Room):Observable<Room> {
+    let id = 0;
+    for (const user of this.users) {
+      if (user.id > id) id = user.id;
+    }
+    newRoom.id = id + 1;
+    this.rooms.push(newRoom);
+    return of(newRoom)
+  }
+
+  updateRoom(newRoom: Room): Observable<Room> {
+    let originalRoom = this.rooms.find(oldRoom => newRoom.id === oldRoom.id);
+    if (originalRoom == null) {
+      return Observable.prototype;
+    }
+    originalRoom.name = newRoom.name;
+    originalRoom.location = newRoom.location;
+    originalRoom.capacities = newRoom.capacities;
+    return of(originalRoom);
+  }
+
+  deleteUser(userId:number): Observable<any>{
+    for (let i = 0; i < this.users.length; i++){
+      let user = this.users[i];
+      if (user.id===userId) {
+        this.users.splice(i,1)
+      }
+    }
+    return of(null);
+  }
+
+  resetPassword(userId: number): Observable<any>{
+    return of(null);
+  }
+
+  deleteRoom(roomId:number): Observable<any>{
+    for (let i = 0; i < this.rooms.length; i++){
+      let room = this.rooms[i];
+      if (room.id===roomId) {
+        this.users.splice(i,1)
+      }
+    }
+    return of(null)
   }
 
   constructor() {
