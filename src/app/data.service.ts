@@ -2,6 +2,8 @@ import {Injectable} from '@angular/core';
 import {Layout, LayoutCapacity, Room} from "./model/Room";
 import {User} from "./model/User";
 import {Observable, of} from "rxjs";
+import {Booking} from "./model/Booking";
+import {formatDate} from "@angular/common";
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +12,7 @@ export class DataService {
 
   private rooms: Array<Room> = new Array<Room>();
   private users: Array<User> = new Array<User>();
+  private bookings: Array<Booking> = new Array<Booking>();
 
 
   get getRooms(): Observable<Array<Room>> {
@@ -18,6 +21,20 @@ export class DataService {
 
   get getUsers(): Observable<Array<User>> {
     return of(this.users);
+  }
+
+  get getBookings(): Observable<Array<Booking>> {
+    return of(this.bookings);
+  }
+
+  getBookingsByDate(date:Date): Observable<Array<Booking>>{
+    const result = new Array<Booking>;
+    for (let booking of this.bookings) {
+      if (booking.getDateAsDate().getDate() === date.getDate()) {
+        result.push(booking);
+      }
+    }
+    return of(result);
   }
 
   updateUser(user: User): Observable<User> {
@@ -42,7 +59,7 @@ export class DataService {
     return of(newUser);
   }
 
-  addRoom(newRoom: Room):Observable<Room> {
+  addRoom(newRoom: Room): Observable<Room> {
     let id = 0;
     for (const user of this.users) {
       if (user.id > id) id = user.id;
@@ -63,25 +80,25 @@ export class DataService {
     return of(originalRoom);
   }
 
-  deleteUser(userId:number): Observable<any>{
-    for (let i = 0; i < this.users.length; i++){
+  deleteUser(userId: number): Observable<any> {
+    for (let i = 0; i < this.users.length; i++) {
       let user = this.users[i];
-      if (user.id===userId) {
-        this.users.splice(i,1)
+      if (user.id === userId) {
+        this.users.splice(i, 1)
       }
     }
     return of(null);
   }
 
-  resetPassword(userId: number): Observable<any>{
+  resetPassword(userId: number): Observable<any> {
     return of(null);
   }
 
-  deleteRoom(roomId:number): Observable<any>{
-    for (let i = 0; i < this.rooms.length; i++){
+  deleteRoom(roomId: number): Observable<any> {
+    for (let i = 0; i < this.rooms.length; i++) {
       let room = this.rooms[i];
-      if (room.id===roomId) {
-        this.users.splice(i,1)
+      if (room.id === roomId) {
+        this.users.splice(i, 1)
       }
     }
     return of(null)
@@ -97,11 +114,37 @@ export class DataService {
       new LayoutCapacity(1, Layout.THEATER, 50),
       new LayoutCapacity(2, Layout.BOARD, 20)
     ])
+    let user1 = new User(1, 'user1')
+    let user2 = new User(2, 'user2')
+    let user3 = new User(3, 'user3')
+
     this.rooms.push(room1, room2);
-    this.users.push(
-      new User(1, 'user1'),
-      new User(2, 'user2'),
-      new User(3, 'user3')
-    )
+    this.users.push(user1, user2, user3);
+
+    this.bookings = new Array<Booking>();
+    const booking1 = new Booking();
+    booking1.id = 1;
+    booking1.room = room1;
+    booking1.user = user1;
+    booking1.layout = Layout.THEATER;
+    booking1.title = 'Example meeting';
+    booking1.date = formatDate(new Date(), 'yyyy-MM-dd', 'en-GB');
+    booking1.startTime = '11:30';
+    booking1.endTime = '12:30';
+    booking1.participants = 12;
+
+    const booking2 = new Booking();
+    booking2.id = 2;
+    booking2.room = room2;
+    booking2.user = user2;
+    booking2.layout = Layout.USHAPE;
+    booking2.title = 'Another meeting';
+    booking2.date = formatDate(new Date(), 'yyyy-MM-dd', 'en-GB');
+    booking2.startTime = '14:00';
+    booking2.endTime = '15:00';
+    booking2.participants = 5;
+
+    this.bookings.push(booking1);
+    this.bookings.push(booking2);
   }
 }
