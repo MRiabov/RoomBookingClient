@@ -22,11 +22,11 @@
 
     <label for="password2">Repeat Password</label>  <!-- id, name, label are unique, [ngModel] points to a object in the class (string) -->
     <input type="password" class="form-control" id="password2" placeholder="password" name="password2"
-           [ngModel]="passwordField2" #passwordField2="ngModel" (change)="!checkIfPasswordIsValid()">
+           [ngModel]="passwordField2" #passwordField2="ngModel" (change)="checkIfPasswordIsValid()">
     <div class="alert alert-danger" *ngIf="!passwordIsValid&&passwordField2.touched">Password can not be blank!</div>
     <div class="alert alert-danger" *ngIf="!passwordMatch&&passwordField2.touched">Passwords must match!</div>
   </div>
 
   <button type="button" class="btn btn-primary" (click)="onSubmit()"
-          [disabled]="userForm.invalid||!nameIsValid||!passwordIsValid">Save</button>
+          [disabled]="userForm.invalid||!nameIsValid">Save</button>
 </form>
