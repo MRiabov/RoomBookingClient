@@ -27,10 +27,16 @@ export class DataService {
     return of(this.bookings);
   }
 
-  getBookingsByDate(date: number): Observable<Array<Booking>> {
+  getBooking(id: number): Observable<Booking> {
+    const foundBooking = this.bookings.find(booking => booking.id === id);
+    if (foundBooking) return of(foundBooking)
+    else return Observable.prototype;
+  }
+
+  getBookingsByDate(date: string): Observable<Array<Booking>> {
     const result = new Array<Booking>;
     for (let booking of this.bookings) {
-      if (booking.getDateAsDate().getDate() === date) {
+      if (booking.date === date) {
         result.push(booking);
       }
     }
@@ -104,22 +110,31 @@ export class DataService {
     return of(null)
   }
 
-  addBooking(newBooking: Booking) {
-    let id = 0;
-    for (const oldBooking of this.bookings) {
-      if (oldBooking.id > id) id = oldBooking.id;
-    }//find the highest id. We shouldn't care with JPA, right?...
-    newBooking.id = id + 1;
+  addBooking(newBooking: Booking) : Observable<any> {
+    newBooking.id = this.bookings.length + 1;
     this.bookings.push(newBooking);
-    return of(newBooking);
+    console.log(this.bookings)
+    return of(null);
   }
 
-  updateBooking(newBooking: Booking){
+  updateBooking(newBooking: Booking) {
     let originalBooking = this.bookings.find(u => newBooking.id === u.id);
     if (originalBooking == null) {
       return Observable.prototype;
     } else originalBooking = newBooking;
     return of(originalBooking);
+  }
+
+  deleteBooking(id: number) {
+    let deletePos = 0;
+    for (let i = 0; i < this.bookings.length; i++) {
+      const booking = this.bookings[i];
+      if (booking.id === id) {
+        deletePos = i;
+        break;
+      }
+    }
+    this.bookings.splice(deletePos,1);
   }
 
   constructor() {

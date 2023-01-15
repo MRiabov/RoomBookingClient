@@ -3,7 +3,7 @@ import {Booking} from "../../model/Booking";
 import {Layout, Room} from "../../model/Room";
 import {DataService} from "../../data.service";
 import {User} from "../../model/User";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-calendar-edit',
@@ -14,24 +14,23 @@ export class CalendarEditComponent implements OnInit {
 
   selectedBooking!: Booking;
   rooms!: Array<Room>
-  layouts = Object.keys(Layout);
+  layouts = Object.values(Layout);
   users!: Array<User>
+  selectedUser!: string;
 
   constructor(private dataService: DataService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private router: Router) {
   }
 
   ngOnInit(): void {
-    let id: number;
-    this.route.queryParams.subscribe(
-      params =>
-        this.dataService.getBookings.subscribe(
-          receivedBookings => {
-            const foundBooking = receivedBookings.find(booking => booking.id === +params['id']);
-            if (foundBooking != null) this.selectedBooking = foundBooking;
-          }
-        )
-    )
+    let id = +this.route.snapshot.queryParams['id']; //snapshot makes it much easier(and faster). do this only on non-reloadable pages.
+    let action = this.route.snapshot.queryParams['action']
+    if (action==='edit') {
+      this.dataService.getBooking(id).subscribe(
+        receivedBooking => this.selectedBooking = receivedBooking
+      )
+    } else this.selectedBooking = new Booking();
     this.dataService.getRooms.subscribe(
       receivedRooms => this.rooms = receivedRooms
     )
@@ -42,10 +41,16 @@ export class CalendarEditComponent implements OnInit {
 
   updateBooking(booking: Booking) {
     if (booking.id) {
-      this.dataService.addBooking(booking);
+
+      this.dataService.updateBooking(booking).subscribe(
+        () => this.router.navigate([''])
+      );
     } else {
-      this.dataService.updateBooking(booking);
+      this.dataService.addBooking(booking).subscribe(
+        () => this.router.navigate([''])
+      );
     }
+    // this.router.navigate(['']);
   }
 
 }

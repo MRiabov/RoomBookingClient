@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Booking} from "../model/Booking";
 import {DataService} from "../data.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
+import {formatDate} from "@angular/common";
 
 @Component({
   selector: 'app-calendar',
@@ -11,28 +12,32 @@ import {Router} from "@angular/router";
 export class CalendarComponent implements OnInit {
 
   // selectedBooking: Booking;
-  displayedBookings: Array<Booking>;
+  displayedBookings!: Array<Booking>;
 
-  selectedDate: Date = new Date();
+  selectedDate!: string;
 
   constructor(private dataService: DataService,
-              private router: Router) {
-    this.displayedBookings = this.getBookingsByDate(this.selectedDate);
+              private router: Router,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
-
+    this.route.queryParams.subscribe(
+      params => {
+        this.selectedDate = params['date']
+        if (!this.selectedDate) {
+          this.selectedDate = formatDate(new Date(), 'yyyy-MM-dd', 'en-GB')
+        }
+        this.dataService.getBookingsByDate(this.selectedDate).subscribe(
+          receivedBookings => this.displayedBookings = receivedBookings
+        )
+      }
+    )
   }
 
-
-  set selectDate(date: Date) {
-    this.selectedDate = date;
-    this.displayedBookings = this.getBookingsByDate(date);
-  }
-
-  getBookingsByDate(date: Date): Array<Booking> {
+  getBookings(): Array<Booking> {
     let result = new Array<Booking>;
-    this.dataService.getBookingsByDate(date.getDate()).subscribe(
+    this.dataService.getBookings/*(date.getDate())*/.subscribe(
       receivedBookings => {
         result = receivedBookings;
       }
@@ -40,8 +45,20 @@ export class CalendarComponent implements OnInit {
     return result;
   }
 
+  onDateChange() {
+    this.router.navigate([''], {queryParams: {date: this.selectedDate}})
+  }
+
   editBooking(id: number) {
-    this.router.navigate(['edit'], {queryParams: {id: id}})
+    this.router.navigate(['edit'], {queryParams: {id: id, action: 'edit'}})
+  }
+
+  cancelBooking(id: number) {
+    this.dataService.deleteBooking(id);
+  }
+
+  addBooking() {
+    this.router.navigate(['edit'], {queryParams: {action: 'add'}})
   }
 
 }
