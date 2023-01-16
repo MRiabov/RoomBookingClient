@@ -1,4 +1,3 @@
-
 export class User {
 
   name: string;
@@ -8,5 +7,9 @@ export class User {
   constructor(id: number, name: string) {
     this.name = name;
     this.id = id;
+  }
+
+  static mapToUser(user: User): User {
+    return new User(user.id, user.name);
   }
 }
