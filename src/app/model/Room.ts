@@ -11,7 +11,10 @@ export class Room {
     if (capacities) this.capacities = capacities;
   }
 
-
+  static mapToRoom(room: Room): Room {
+    return new Room(room.id, room.name, room.location,
+      room.capacities.map(lc => LayoutCapacity.mapToLayoutCapacity(lc)));
+  }
 }
 
 export class LayoutCapacity {
@@ -23,6 +26,10 @@ export class LayoutCapacity {
     this.id = id;
     this.layout = layout;
     this.capacity = capacity;
+  }
+
+  static mapToLayoutCapacity(lc: LayoutCapacity): LayoutCapacity {
+    return new LayoutCapacity(lc.id, (<Layout>lc.layout), lc.capacity)
   }
 }
 

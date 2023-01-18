@@ -1,9 +1,8 @@
 import {Injectable} from '@angular/core';
-import {Layout, LayoutCapacity, Room} from "./model/Room";
+import {Room} from "./model/Room";
 import {User} from "./model/User";
 import {map, Observable, of} from "rxjs";
 import {Booking} from "./model/Booking";
-import {formatDate} from "@angular/common";
 import {environment} from "../environments/environment";
 import {HttpClient} from "@angular/common/http";
 
@@ -12,16 +11,20 @@ import {HttpClient} from "@angular/common/http";
 })
 export class DataService {
 
-  constructor(private http:HttpClient) {
+  constructor(private http: HttpClient) {
     console.log(environment.restUrl)
   }
 
   get getRooms(): Observable<Array<Room>> {
-    return Observable.prototype;
+    return this.http.get<Array<Room>>(environment.restUrl + 'api/rooms/getAll').pipe(
+      map(array => {
+        return array.map((value) => Room.mapToRoom(value))
+      })
+    )
   }
 
   get getUsers(): Observable<Array<User>> {
-    return this.http.get<Array<User>>(environment.restUrl+'api/users/getAll').pipe(
+    return this.http.get<Array<User>>(environment.restUrl + 'api/users/getAll').pipe(
       map(array => {
         return array.map((value) => User.mapToUser(value))
       })
@@ -81,14 +84,6 @@ export class DataService {
 
   deleteBooking(id: number) {
     return of(null);
-  }
-
-  getUser(id: number): Observable<User> {
-    return this.http.get<User>(environment.restUrl+'api/users/' + id,).pipe(
-      map(data => {
-        return User.mapToUser(data);
-      })
-    )
   }
 
 
