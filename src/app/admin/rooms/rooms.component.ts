@@ -14,6 +14,8 @@ export class RoomsComponent implements OnInit {
   selectedRoom!: Room;
   action!: string;
   pageLoading = true;
+  errorMessage = 'Please wait... getting the list of rooms.'
+  reloadAttempts = 0;
 
   constructor(private dataService: DataService,
               private route: ActivatedRoute,
@@ -21,13 +23,34 @@ export class RoomsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataService.getRooms.subscribe(
-      next => {
-        this.rooms = next;
-        this.pageLoading = false;
-      }
-    );
+    this.loadData();
+  }
 
+  loadData() {
+    this.dataService.getRooms.subscribe({
+        next: (next) => {
+          this.rooms = next;
+          this.pageLoading = false;
+          this.processData()
+        },
+        error: err => {
+          if (err.status === 402) {
+            this.errorMessage = 'Sorry, you must pay to use this application!'
+          } else {
+            this.errorMessage = 'Sorry, something went wrong. 😳😳😳 Trying again... Please';
+            if (this.reloadAttempts < 10) {
+              this.reloadAttempts++;
+              this.loadData();
+            } else {
+              this.errorMessage = 'Seems the backend is down😳😳😳';
+            }
+          }
+        }
+      }
+    )
+  }
+
+  processData(){
     this.route.queryParams.subscribe(
       params => {
         const id = params['id']
@@ -41,6 +64,7 @@ export class RoomsComponent implements OnInit {
         }
       }
     )
+
   }
 
   setSelectedRoom(id: number) {

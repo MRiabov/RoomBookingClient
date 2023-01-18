@@ -13,6 +13,9 @@ export class UsersComponent implements OnInit {
   users!: Array<User>;
   selectedUser!: User;
   action!: string;
+  pageLoaded = false;
+  errorMessage = 'Fetching data...'
+  timesPageReloaded = 0;
 
   constructor(private dataService: DataService,
               private router: Router,
@@ -20,9 +23,33 @@ export class UsersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataService.getUsers.subscribe(
-      next => this.users = next
-    );
+    this.fetchData()
+  }
+
+  fetchData() {
+    this.dataService.getUsers.subscribe({
+        next: next => {
+          this.pageLoaded = true;
+          this.users = next
+          this.processData()
+        },
+        error: err => {
+          if (err.status === 403) {
+            this.errorMessage = 'Hey, could you please log in?'
+          } else {
+            if (this.timesPageReloaded < 10) {
+              this.timesPageReloaded++;
+              this.errorMessage = 'Trying to fetch your precious knowledge from the server...'
+              this.fetchData();
+            }
+          }
+
+        }
+      }
+    )
+  }
+
+  processData() {
     //queryParams are parameters of the query, something that goes after ? in link, like google.com/find?id=3&action=view
     this.route.queryParams.subscribe(
       params => {
