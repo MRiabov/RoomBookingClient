@@ -22,6 +22,7 @@
       </tbody>
     </table>
   </div>
+  <div *ngIf="pageLoading">Please wait... getting the list of rooms.</div>
   <div class="col-6">
     <app-room-detail *ngIf="action==='view'" [selectedRoom]="selectedRoom"></app-room-detail>
     <app-room-edit *ngIf="action==='edit'" [selectedRoom]="selectedRoom"></app-room-edit>

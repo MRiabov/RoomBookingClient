@@ -13,6 +13,7 @@ export class RoomsComponent implements OnInit {
   rooms!: Array<Room>
   selectedRoom!: Room;
   action!: string;
+  pageLoading = true;
 
   constructor(private dataService: DataService,
               private route: ActivatedRoute,
@@ -21,7 +22,10 @@ export class RoomsComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataService.getRooms.subscribe(
-      next => this.rooms = next
+      next => {
+        this.rooms = next;
+        this.pageLoading = false;
+      }
     );
 
     this.route.queryParams.subscribe(
@@ -31,9 +35,9 @@ export class RoomsComponent implements OnInit {
         if (id) { // @ts-ignore
           this.selectedRoom = this.rooms.find(room => room.id === +id)
         }
-        if (params['action']==='add'){
-          this.selectedRoom=new Room();
-          this.action='edit';
+        if (params['action'] === 'add') {
+          this.selectedRoom = new Room();
+          this.action = 'edit';
         }
       }
     )
@@ -43,7 +47,7 @@ export class RoomsComponent implements OnInit {
     this.router.navigate(['admin', 'rooms'], {queryParams: {id: id, action: 'view'}});
   }
 
-  addRoom(){
-    this.router.navigate(['admin','rooms'], {queryParams: {action: 'add'}})
+  addRoom() {
+    this.router.navigate(['admin', 'rooms'], {queryParams: {action: 'add'}})
   }
 }
