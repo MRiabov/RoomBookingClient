@@ -11,7 +11,6 @@ import {formatDate} from "@angular/common";
 })
 export class CalendarComponent implements OnInit {
 
-  // selectedBooking: Booking;
   displayedBookings!: Array<Booking>;
 
   selectedDate!: string;
