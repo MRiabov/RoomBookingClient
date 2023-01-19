@@ -45,15 +45,17 @@ export class DataService {
   }
 
   updateUser(user: User): Observable<User> {
-    return Observable.prototype;
+    return this.http.put<User>(environment.restUrl + 'api/users/update', user);
   }
 
   addUser(newUser: User, password: string): Observable<User> {
-    return Observable.prototype;
+    const fullUser = {id: newUser.id,name: newUser.name, password: password}
+    return this.http.post<User>(environment.restUrl+'api/users/save', fullUser);
   }
 
   addRoom(newRoom: Room): Observable<Room> {
-    return Observable.prototype;
+
+    return this.http.post<Room>(environment.restUrl+'api/rooms/save', newRoom);
 
   }
 

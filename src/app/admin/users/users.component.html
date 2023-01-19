@@ -24,6 +24,9 @@
   <div *ngIf="!pageLoaded">{{errorMessage}}</div>
   <div class="col-6">
     <app-user-detail *ngIf="action === 'view'" [selectedUser]="selectedUser"></app-user-detail>
-    <app-user-edit *ngIf="action === 'edit'||action === 'add'" [selectedUser]="selectedUser"></app-user-edit>
+    <app-user-edit *ngIf="action === 'edit'||action === 'add'" [selectedUser]="selectedUser"
+                   (dataChangedEvent)="fetchData()"></app-user-edit>
+              <!-- it is in round brackets because it's input from the subclass (binding)-->
+<!--                  although it might be that it is a method/event.-->
   </div>
 </div>
