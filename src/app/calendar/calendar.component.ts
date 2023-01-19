@@ -11,9 +11,10 @@ import {formatDate} from "@angular/common";
 })
 export class CalendarComponent implements OnInit {
 
-  displayedBookings!: Array<Booking>;
+  displayedBookings?: Array<Booking>;
 
-  selectedDate!: string;
+  selectedDate?: string;
+  message = ''
 
   constructor(private dataService: DataService,
               private router: Router,
@@ -21,27 +22,28 @@ export class CalendarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.message = 'Loading data...'
+    this.loadData();
+  }
+
+  loadData() {
     this.route.queryParams.subscribe(
       params => {
         this.selectedDate = params['date']
         if (!this.selectedDate) {
           this.selectedDate = formatDate(new Date(), 'yyyy-MM-dd', 'en-GB')
         }
-        this.dataService.getBookingsByDate(this.selectedDate).subscribe(
-          receivedBookings => this.displayedBookings = receivedBookings
+        this.dataService.getBookingsByDate(this.selectedDate).subscribe({
+            next: receivedBookings => {
+              console.log(receivedBookings)
+              this.displayedBookings = receivedBookings
+            },
+            error: err => this.message = 'Sorry, couldn`t GET your data. heh.'
+
+          }
         )
       }
     )
-  }
-
-  getBookings(): Array<Booking> {
-    let result = new Array<Booking>;
-    this.dataService.getBookings/*(date.getDate())*/.subscribe(
-      receivedBookings => {
-        result = receivedBookings;
-      }
-    )
-    return result;
   }
 
   onDateChange() {
@@ -53,7 +55,10 @@ export class CalendarComponent implements OnInit {
   }
 
   cancelBooking(id: number) {
-    this.dataService.deleteBooking(id);
+    this.dataService.deleteBooking(id).subscribe({
+      next: () => this.loadData(),
+      error: () => this.message = 'Sorry, something went wrong.'
+    });
   }
 
   addBooking() {

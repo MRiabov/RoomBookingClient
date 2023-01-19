@@ -28,6 +28,8 @@ export class RoomDetailComponent implements OnInit {
   }
 
   deleteRoom(): void {
+    if (!confirm('Are you sure you want to delete this room?')) return
+
     this.message = 'Deleting...'
     this.dataService.deleteRoom(this.selectedRoom.id).subscribe({
         next: () => {
