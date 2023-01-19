@@ -72,6 +72,8 @@ export class RoomsComponent implements OnInit {
   }
 
   addRoom() {
+    this.selectedRoom = new Room(undefined,"123");
+    console.log(this.selectedRoom);
     this.router.navigate(['admin', 'rooms'], {queryParams: {action: 'add'}})
   }
 }

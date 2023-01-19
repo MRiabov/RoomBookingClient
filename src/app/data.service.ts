@@ -54,9 +54,7 @@ export class DataService {
   }
 
   addRoom(newRoom: Room): Observable<Room> {
-
     return this.http.post<Room>(environment.restUrl+'api/rooms/save', newRoom);
-
   }
 
   updateRoom(newRoom: Room): Observable<Room> {
@@ -73,7 +71,7 @@ export class DataService {
   }
 
   deleteRoom(roomId: number): Observable<any> {
-    return of(null);
+    return this.http.delete(environment.restUrl + 'api/rooms/' +roomId)
   }
 
   addBooking(newBooking: Booking): Observable<any> {

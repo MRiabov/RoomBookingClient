@@ -1,10 +1,10 @@
 <h1> {{selectedRoom.id == null ? 'Add' : 'Edit'}} Room</h1>
-<p>you are now editing {{selectedRoom.name}}</p>
+<p *ngIf="selectedRoom.name">you are now editing {{selectedRoom.name}}</p>
 <form [formGroup]="roomForm">
   <div class="form-group">
     <label for="name">Name</label><!--                                        formControlName for reactive forms-->
     <input type="text" class="form-control" id="name" placeholder="room name" formControlName="roomName"
-           required>
+           required [(ngModel)]="selectedRoom.name">
     <div class="alert alert-danger" *ngIf="roomForm.controls.roomName.invalid"></div>
 
   </div>

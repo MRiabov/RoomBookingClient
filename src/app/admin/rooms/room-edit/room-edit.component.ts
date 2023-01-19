@@ -20,8 +20,8 @@ export class RoomEditComponent implements OnInit {
 
   roomForm = this.formBuilder.group(
     {
-      roomName: [this.selectedRoom.name, Validators.required],
-      location: [this.selectedRoom.location, [Validators.required, Validators.minLength(2)]]
+      roomName: [this.selectedRoom?.name, Validators.required],
+      location: [this.selectedRoom?.location, [Validators.required, Validators.minLength(2)]]
     }
   )
 
