@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {User} from "../../../model/User";
 import {Router} from "@angular/router";
 import {DataService} from "../../../data.service";
@@ -13,8 +13,12 @@ export class UserDetailComponent {
   @Input()
   selectedUser!: User;
 
+  @Output()
+  userDeletedEvent = new EventEmitter()
+  message = ''
+
   constructor(private router: Router,
-              private dataService:DataService) {
+              private dataService: DataService) {
   }
 
   editUser() {
@@ -23,14 +27,27 @@ export class UserDetailComponent {
   }
 
   deleteUser() {
-    this.dataService.deleteUser(this.selectedUser.id).subscribe(
-      () =>
-        this.router.navigate(['admin', 'users'])
+    this.message = 'Deleting...'
+    this.dataService.deleteUser(this.selectedUser.id).subscribe({
+        next: () => {
+          this.userDeletedEvent.emit()
+          this.router.navigate(['admin', 'users'])
+        },
+        error: () => {
+          this.message = "Sorry, can't delete this user..."
+        }
+      }
     );
   }
 
-  resetPassword(){
-    this.dataService.resetPassword(this.selectedUser.id).subscribe();
+  resetPassword() {
+    this.message = 'Resetting in progress...'
+    this.dataService.resetPassword(this.selectedUser.id).subscribe({
+      next: value => {
+        this.message = 'The password has been reset'
+      },
+      error: err => this.message = 'Sorry, the error has occured...'
+    });
   }
 
 }

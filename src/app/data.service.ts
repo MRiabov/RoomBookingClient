@@ -49,12 +49,12 @@ export class DataService {
   }
 
   addUser(newUser: User, password: string): Observable<User> {
-    const fullUser = {id: newUser.id,name: newUser.name, password: password}
-    return this.http.post<User>(environment.restUrl+'api/users/save', fullUser);
+    const fullUser = {id: newUser.id, name: newUser.name, password: password}
+    return this.http.post<User>(environment.restUrl + 'api/users/save', fullUser);
   }
 
   addRoom(newRoom: Room): Observable<Room> {
-    return this.http.post<Room>(environment.restUrl+'api/rooms/save', newRoom);
+    return this.http.post<Room>(environment.restUrl + 'api/rooms/save', newRoom);
   }
 
   updateRoom(newRoom: Room): Observable<Room> {
@@ -63,15 +63,15 @@ export class DataService {
   }
 
   deleteUser(userId: number): Observable<any> {
-    return of(null);
+    return this.http.delete(environment.restUrl + 'api/users/' + userId)
   }
 
   resetPassword(userId: number): Observable<any> {
-    return of(null);
+    return this.http.get(environment.restUrl + 'api/users/resetPassword' + userId)
   }
 
   deleteRoom(roomId: number): Observable<any> {
-    return this.http.delete(environment.restUrl + 'api/rooms/' +roomId)
+    return this.http.delete(environment.restUrl + 'api/rooms/' + roomId)
   }
 
   addBooking(newBooking: Booking): Observable<any> {
