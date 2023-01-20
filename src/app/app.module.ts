@@ -22,7 +22,7 @@ const routes: Routes = [
   {path: 'admin/rooms', component: RoomsComponent},
   {path: '', component: CalendarComponent},
   {path: 'edit', component: CalendarEditComponent},
-  {path: 'editBookingLoad', component: CalendarComponent},
+  {path: 'editBookingLoad', component: EditBookingLoadComponent},
   {path: '404', component: PageNotFoundComponent},
   {path: '**', redirectTo: '/404'}
 ]

@@ -4,6 +4,8 @@ import {Layout, Room} from "../../model/Room";
 import {DataService} from "../../data.service";
 import {User} from "../../model/User";
 import {ActivatedRoute, Router} from "@angular/router";
+import {EditBookingDataService} from "../../edit-booking-data.service";
+import {map} from "rxjs";
 
 @Component({
   selector: 'app-calendar-edit',
@@ -20,23 +22,32 @@ export class CalendarEditComponent implements OnInit {
 
   constructor(private dataService: DataService,
               private route: ActivatedRoute,
-              private router: Router) {
+              private router: Router,
+              private editBookingDataService: EditBookingDataService) {
   }
 
   ngOnInit(): void {
+    this.users = this.editBookingDataService.users;
+    this.rooms = this.editBookingDataService.rooms;
+
     let id = +this.route.snapshot.queryParams['id']; //snapshot makes it much easier(and faster). do this only on non-reloadable pages.
     let action = this.route.snapshot.queryParams['action']
     if (action === 'edit') {
-      this.dataService.getBooking(id).subscribe(
-        receivedBooking => this.selectedBooking = receivedBooking
-      )
+      this.dataService.getBooking(id)
+        .pipe(
+          map(booking => {
+            const room = this.rooms.find(r => r.id === booking.room.id);
+            booking.room = room ? room : new Room();
+            const user = this.users.find(u => u.id === booking.user.id);
+            booking.user = user ? user : new Room();
+            return booking
+          })
+        )
+        .subscribe(
+          receivedBooking => this.selectedBooking = receivedBooking
+        )
     } else this.selectedBooking = new Booking();
-    this.dataService.getRooms.subscribe(
-      receivedRooms => this.rooms = receivedRooms
-    )
-    this.dataService.getUsers.subscribe(
-      receivedUsers => this.users = receivedUsers
-    )
+
   }
 
   updateBooking(booking: Booking) {
