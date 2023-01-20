@@ -31,13 +31,11 @@ export class DataService {
     )
   }
 
-  get getBookings(): Observable<Array<Booking>> {
-    return Observable.prototype;
-  }
-
   getBooking(id: number): Observable<Booking> {
-    return Observable.prototype;
-
+    console.log('Got booking by Id')
+    return this.http.get<Booking>(environment.restUrl + 'api/calendar/getById?id=' + id).pipe(
+      map(data => Booking.fromHttp(data))
+    )
   }
 
   getBookingsByDate(date: string): Observable<Array<Booking>> {
@@ -63,7 +61,6 @@ export class DataService {
 
   updateRoom(newRoom: Room): Observable<Room> {
     return Observable.prototype;
-
   }
 
   deleteUser(userId: number): Observable<any> {
@@ -89,6 +86,4 @@ export class DataService {
   deleteBooking(id: number) {
     return this.http.delete(environment.restUrl + 'api/calendar/' + id)
   }
-
-
 }
