@@ -17,6 +17,7 @@ import { CalendarEditComponent } from './calendar/calendar-edit/calendar-edit.co
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {PrefetchRoomsService} from "./calendar/prefetch-rooms.service";
 import {PrefetchUsersService} from "./calendar/prefetch-users.service";
+import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
   {path: 'admin/users', component: UsersComponent},
@@ -41,6 +42,7 @@ const routes: Routes = [
     UserEditComponent,
     RoomEditComponent,
     CalendarEditComponent,
+    LoginComponent,
 
   ],
   imports: [
