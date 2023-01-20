@@ -26,7 +26,7 @@ export class CalendarEditComponent implements OnInit {
   ngOnInit(): void {
     let id = +this.route.snapshot.queryParams['id']; //snapshot makes it much easier(and faster). do this only on non-reloadable pages.
     let action = this.route.snapshot.queryParams['action']
-    if (action==='edit') {
+    if (action === 'edit') {
       this.dataService.getBooking(id).subscribe(
         receivedBooking => this.selectedBooking = receivedBooking
       )
