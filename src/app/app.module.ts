@@ -15,15 +15,15 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { RoomEditComponent } from './admin/rooms/room-edit/room-edit.component';
 import { CalendarEditComponent } from './calendar/calendar-edit/calendar-edit.component';
 import {HttpClient, HttpClientModule} from "@angular/common/http";
-import { EditBookingLoadComponent } from './calendar/edit-booking-load/edit-booking-load.component';
+import {PrefetchRoomsService} from "./calendar/prefetch-rooms.service";
+import {PrefetchUsersService} from "./calendar/prefetch-users.service";
 
 const routes: Routes = [
   {path: 'admin/users', component: UsersComponent},
   {path: 'admin/rooms', component: RoomsComponent},
   {path: '', component: CalendarComponent},
-  {path: 'edit', component: CalendarEditComponent},
-  {path: 'editBookingLoad', component: EditBookingLoadComponent},
-  {path: '404', component: PageNotFoundComponent},
+  {path: 'edit', component: CalendarEditComponent, resolve: {rooms: PrefetchRoomsService, users: PrefetchUsersService}},
+  {path: '404', component: PageNotFoundComponent, resolve: {rooms: PrefetchRoomsService, users: PrefetchUsersService}},
   {path: '**', redirectTo: '/404'}
 ]
 
@@ -41,7 +41,7 @@ const routes: Routes = [
     UserEditComponent,
     RoomEditComponent,
     CalendarEditComponent,
-    EditBookingLoadComponent,
+
   ],
   imports: [
     BrowserModule,

@@ -51,7 +51,7 @@ export class CalendarComponent implements OnInit {
   }
 
   editBooking(id: number) {
-    this.router.navigate(['editBookingLoad'], {queryParams: {id: id, action: 'edit'}})
+    this.router.navigate(['edit'], {queryParams: {id: id, action: 'edit'}})
   }
 
   cancelBooking(id: number) {

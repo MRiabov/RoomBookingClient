@@ -4,7 +4,6 @@ import {Layout, Room} from "../../model/Room";
 import {DataService} from "../../data.service";
 import {User} from "../../model/User";
 import {ActivatedRoute, Router} from "@angular/router";
-import {EditBookingDataService} from "../../edit-booking-data.service";
 import {map} from "rxjs";
 
 @Component({
@@ -22,13 +21,12 @@ export class CalendarEditComponent implements OnInit {
 
   constructor(private dataService: DataService,
               private route: ActivatedRoute,
-              private router: Router,
-              private editBookingDataService: EditBookingDataService) {
+              private router: Router) {
   }
 
   ngOnInit(): void {
-    this.users = this.editBookingDataService.users;
-    this.rooms = this.editBookingDataService.rooms;
+    this.rooms = this.route.snapshot.data['rooms']
+    this.users = this.route.snapshot.data['users']
 
     let id = +this.route.snapshot.queryParams['id']; //snapshot makes it much easier(and faster). do this only on non-reloadable pages.
     let action = this.route.snapshot.queryParams['action']
