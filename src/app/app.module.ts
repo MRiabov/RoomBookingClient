@@ -18,13 +18,16 @@ import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {PrefetchRoomsService} from "./calendar/prefetch-rooms.service";
 import {PrefetchUsersService} from "./calendar/prefetch-users.service";
 import { LoginComponent } from './login/login.component';
+import {AuthRouteGuardService} from "./auth-route-guard.service";
 
 const routes: Routes = [
-  {path: 'admin/users', component: UsersComponent},
-  {path: 'admin/rooms', component: RoomsComponent},
+  {path: 'admin/users', component: UsersComponent, canActivate: [AuthRouteGuardService]},
+  {path: 'admin/rooms', component: RoomsComponent, canActivate: [AuthRouteGuardService]},
   {path: '', component: CalendarComponent},
-  {path: 'edit', component: CalendarEditComponent, resolve: {rooms: PrefetchRoomsService, users: PrefetchUsersService}},
-  {path: '404', component: PageNotFoundComponent, resolve: {rooms: PrefetchRoomsService, users: PrefetchUsersService}},
+  {path: 'edit', component: CalendarEditComponent, resolve: {rooms: PrefetchRoomsService, users: PrefetchUsersService},
+    canActivate: [AuthRouteGuardService]},
+  {path: '404', component: PageNotFoundComponent},
+  {path: 'login', component: LoginComponent},
   {path: '**', redirectTo: '/404'}
 ]
 
