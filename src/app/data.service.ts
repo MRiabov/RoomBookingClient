@@ -15,8 +15,10 @@ export class DataService {
     console.log(environment.restUrl)
   }
 
-  get getRooms(): Observable<Array<Room>> {
-    return this.http.get<Array<Room>>(environment.restUrl + 'api/rooms/getAll').pipe(
+  getRooms(token: string): Observable<Array<Room>> {
+    const headers = new HttpHeaders().append('Authorization', 'Bearer ' + token)//this is how you append headers!
+    return this.http.get<Array<Room>>(environment.restUrl + 'api/rooms/getAll',
+      {headers: headers}).pipe(
       map(array => {
         return array.map((value) => Room.mapToRoom(value))
       })
@@ -83,11 +85,11 @@ export class DataService {
     return of(null)
   }
 
-  validateUser(name: String, password: String): Observable<string> {
+  validateUser(name: String, password: String): Observable<{ result: string }> {
     const authData = btoa(`${name}:${password}`)
     const headers = new HttpHeaders().append('Authorization', 'Basic ' + authData)
-    return this.http.get<string>(environment.restUrl + 'api/basicAuth/validate/', {headers: headers});
-  //                                                don't forget HEADERS!!!!!!!(needed for CORS) ^^^^^
+    return this.http.get<{ result: string }>(environment.restUrl + 'api/basicAuth/validate/', {headers: headers});
+    //                                                don't forget HEADERS!!!!!!!(needed for CORS) ^^^^^
   }
 
   deleteBooking(id: number) {

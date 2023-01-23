@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {DataService} from "../../data.service";
 import {Room} from "../../model/Room";
 import {ActivatedRoute, Router} from "@angular/router";
+import {AuthService} from "../../auth.service";
 
 @Component({
   selector: 'app-rooms',
@@ -19,7 +20,8 @@ export class RoomsComponent implements OnInit {
 
   constructor(private dataService: DataService,
               private route: ActivatedRoute,
-              private router: Router) {
+              private router: Router,
+              private authService: AuthService) {
   }
 
   ngOnInit(): void {
@@ -27,7 +29,7 @@ export class RoomsComponent implements OnInit {
   }
 
   loadData() {
-    this.dataService.getRooms.subscribe({
+    this.dataService.getRooms(this.authService.jwtToken).subscribe({
         next: (next) => {
           this.rooms = next;
           this.pageLoading = false;
