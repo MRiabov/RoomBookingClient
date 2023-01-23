@@ -4,7 +4,7 @@ import {User} from "./model/User";
 import {map, Observable, of} from "rxjs";
 import {Booking} from "./model/Booking";
 import {environment} from "../environments/environment";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
@@ -81,6 +81,13 @@ export class DataService {
 
   updateBooking(newBooking: Booking) {
     return of(null)
+  }
+
+  validateUser(name: String, password: String): Observable<string> {
+    const authData = btoa(`${name}:${password}`)
+    const headers = new HttpHeaders().append('Authorization', 'Basic ' + authData)
+    return this.http.get<string>(environment.restUrl + 'api/basicAuth/validate/', {headers: headers});
+  //                                                don't forget HEADERS!!!!!!!(needed for CORS) ^^^^^
   }
 
   deleteBooking(id: number) {

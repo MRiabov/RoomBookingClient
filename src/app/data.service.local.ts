@@ -116,6 +116,10 @@ export class DataService {
     return of(null);
   }
 
+  validateUser(name: String, password: String): Observable<string> {
+    return of('ok');
+  }
+
   updateBooking(newBooking: Booking) {
     let originalBooking = this.bookings.find(u => newBooking.id === u.id);
     if (originalBooking == null) {
