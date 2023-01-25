@@ -15,6 +15,8 @@ export class RoomDetailComponent implements OnInit {
   @Output()
   roomDeletedEvent = new EventEmitter();
   message = '';
+  @Input()
+  isAdminUser!:boolean;
 
   constructor(private router: Router,
               private dataService: DataService) {

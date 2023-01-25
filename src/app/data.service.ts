@@ -61,8 +61,10 @@ export class DataService {
     return this.http.post<Room>(environment.restUrl + 'api/rooms/save', newRoom);
   }
 
-  updateRoom(newRoom: Room): Observable<Room> {
-    return Observable.prototype;
+  updateRoom(newRoom: Room, jwtToken: string): Observable<Room> {
+    console.log(jwtToken)
+    return this.http.put<Room>(environment.restUrl + 'api/rooms/update', newRoom,
+      {headers: new HttpHeaders().append('Authorization', 'Bearer: ' + jwtToken)});
   }
 
   deleteUser(userId: number): Observable<any> {

@@ -3,6 +3,7 @@ import {Layout, Room} from "../../../model/Room";
 import {FormBuilder, Validators} from "@angular/forms";
 import {DataService} from "../../../data.service";
 import {Router} from "@angular/router";
+import {AuthService} from "../../../auth.service";
 
 @Component({
   selector: 'app-room-edit',
@@ -29,7 +30,8 @@ export class RoomEditComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
               private dataService: DataService,
-              private router: Router) {
+              private router: Router,
+              private authService: AuthService) {
   }
 
   ngOnInit(): void {
@@ -57,7 +59,7 @@ export class RoomEditComponent implements OnInit {
           ['admin', 'rooms'], {queryParams: {id: receivedRoom.id, action: 'view '}})
       )
     } else {
-      this.dataService.updateRoom(this.selectedRoom).subscribe(
+      this.dataService.updateRoom(this.selectedRoom, this.authService.jwtToken).subscribe(
         receivedRoom => this.router.navigate(
           ['admin', 'rooms'], {queryParams: {id: receivedRoom.id, action: 'view '}})
       )
